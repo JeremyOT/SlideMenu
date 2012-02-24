@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'SlideMenu' target in the 'SlideMenu' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif
