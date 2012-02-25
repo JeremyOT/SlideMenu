@@ -161,7 +161,7 @@
 		243E4A2014E3A16400EDB2C6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 				ORGANIZATIONNAME = JOT;
 			};
 			buildConfigurationList = 243E4A2314E3A16400EDB2C6 /* Build configuration list for PBXProject "SlideMenuDemo" */;

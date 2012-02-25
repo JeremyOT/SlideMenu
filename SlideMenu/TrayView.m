@@ -162,26 +162,11 @@
         return;
     }
     if (_displayed) {
+        _displayed = NO;
         [UIView animateWithDuration:[[UIApplication sharedApplication] statusBarOrientationAnimationDuration] animations:^{
-            CGRect frame = self.frame;
-            switch (_orientation) {
-                case UIInterfaceOrientationPortraitUpsideDown:
-                    frame.origin.x = self.window.frame.size.width;
-                    break;
-                case UIInterfaceOrientationLandscapeLeft:
-                    frame.origin.y = self.window.frame.size.height;
-                    break;
-                case UIInterfaceOrientationLandscapeRight:
-                    frame.origin.y = -frame.size.height;
-                    break;
-                case UIInterfaceOrientationPortrait:
-                default:
-                    frame.origin.x = 0;
-                    break;
-            }
-            self.frame = frame;
+            self.alpha = 0;
         } completion:^(BOOL finished) {
-            [self showInWindow:self.window];
+            self.alpha = 1;
         }];
     }
     _orientation = orientation;
