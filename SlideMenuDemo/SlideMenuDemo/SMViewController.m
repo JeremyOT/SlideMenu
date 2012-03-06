@@ -8,6 +8,7 @@
 #import "SMViewController.h"
 #import "SlideMenu.h"
 #import "SlideMenuItem.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation SMViewController
 
@@ -39,8 +40,11 @@
                       [[[SlideMenuItem alloc] initWithTitle:@"Item 3" block:block] autorelease],
                       nil];
     [menu addSectionWithName:@"Header 1" items:items];
+    UIView *accView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)] autorelease];
+    accView.layer.cornerRadius = 10;
+    accView.backgroundColor = [UIColor whiteColor];
     NSArray *moreItems = [NSArray arrayWithObjects:
-                          [[[SlideMenuItem alloc] initWithTitle:@"Item 4" block:block accessoryType:UITableViewCellAccessoryDisclosureIndicator] autorelease],
+                          [[[SlideMenuItem alloc] initWithTitle:@"Item 4" block:block accessoryView:accView] autorelease],
                           [[[SlideMenuItem alloc] initWithTitle:@"Item 5" block:block accessoryType:UITableViewCellAccessoryNone icon:nil textColor:[UIColor lightGrayColor] backgroundColor:nil] autorelease],
                           [[[SlideMenuItem alloc] initWithTitle:@"Item 6" block:block accessoryType:UITableViewCellAccessoryNone icon:nil textColor:nil backgroundColor:[UIColor darkGrayColor]] autorelease],
                           nil];

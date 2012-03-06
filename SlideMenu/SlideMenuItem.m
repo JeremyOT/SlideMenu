@@ -11,6 +11,7 @@
 
 @synthesize title = _title;
 @synthesize icon = _icon;
+@synthesize accessoryView = _accessoryView;
 @synthesize accessoryType = _accessoryType;
 @synthesize textColor = _textColor;
 @synthesize backgroundColor = _backgroundColor;
@@ -26,9 +27,17 @@
     return [self initWithTitle:title block:action accessoryType:accessoryType icon:nil textColor:[UIColor whiteColor] backgroundColor:[UIColor clearColor]];
 }
 
+-(id)initWithTitle:(NSString*)title block:(BOOL (^)(SlideMenuItem *item))action accessoryView:(UIView*)accessoryView {
+    if ((self = [self initWithTitle:title block:action accessoryType:UITableViewCellAccessoryNone icon:nil textColor:[UIColor whiteColor] backgroundColor:[UIColor clearColor]])) {
+        self.accessoryView = accessoryView;
+    }
+    return self;
+}
+
 -(id)initWithTitle:(NSString*)title block:(BOOL (^)(SlideMenuItem *item))action accessoryType:(UITableViewCellAccessoryType)accessoryType icon:(UIImage *)icon {
     return [self initWithTitle:title block:action accessoryType:accessoryType icon:icon textColor:[UIColor whiteColor] backgroundColor:[UIColor clearColor]];
 }
+
 
 -(id)initWithTitle:(NSString*)title block:(BOOL (^)(SlideMenuItem *item))action accessoryType:(UITableViewCellAccessoryType)accessoryType icon:(UIImage*)icon textColor:(UIColor *)textColor backgroundColor:(UIColor *)backgroundColor {
     if ((self = [super init])) {
@@ -47,6 +56,7 @@
     [_icon release];
     [_textColor release];
     [_backgroundColor release];
+    [_accessoryView release];
     [_block release];
     [super dealloc];
 }

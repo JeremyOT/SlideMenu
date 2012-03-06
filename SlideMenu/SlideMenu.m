@@ -184,6 +184,7 @@
     cell.imageView.image = item.icon;
     cell.contentView.backgroundColor = item.backgroundColor;
     cell.accessoryType = item.accessoryType;
+    cell.accessoryView = item.accessoryView;
     return cell;
 }
 

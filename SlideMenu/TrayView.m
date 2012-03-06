@@ -63,25 +63,26 @@
     _displayed = YES;
     self.transform = CGAffineTransformIdentity;
     CGRect trayFrame = self.frame;
+    CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
     switch (_orientation) {
         case UIInterfaceOrientationPortraitUpsideDown:
-            trayFrame.size.height = window.rootViewController.view.bounds.size.height;
+            trayFrame.size.height = window.frame.size.height - statusBarFrame.size.height;
             trayFrame.origin.y = 0;
             trayFrame.origin.x = window.frame.size.width - self.frame.size.width;
             self.frame = trayFrame;
             self.transform = CGAffineTransformMakeRotation(M_PI);
             break;
         case UIInterfaceOrientationLandscapeLeft:
-            trayFrame.size.height = window.rootViewController.view.frame.size.width;
+            trayFrame.size.height = window.frame.size.width - statusBarFrame.size.width;
             self.frame = trayFrame;
             self.transform = CGAffineTransformMakeRotation(-M_PI_2);
             trayFrame = self.frame;
-            trayFrame.origin.x = window.frame.size.width - window.rootViewController.view.frame.size.width;
+            trayFrame.origin.x = statusBarFrame.size.width;
             trayFrame.origin.y = window.frame.size.height - self.frame.size.height;
             self.frame = trayFrame;
             break;
         case UIInterfaceOrientationLandscapeRight:
-            trayFrame.size.height = window.rootViewController.view.frame.size.width;
+            trayFrame.size.height = window.frame.size.width - statusBarFrame.size.width;
             self.frame = trayFrame;
             self.transform = CGAffineTransformMakeRotation(M_PI_2);
             trayFrame = self.frame;
@@ -91,8 +92,8 @@
             break;
         case UIInterfaceOrientationPortrait:
         default:
-            trayFrame.size.height = window.rootViewController.view.bounds.size.height;
-            trayFrame.origin.y = window.frame.size.height - window.rootViewController.view.frame.size.height;
+            trayFrame.size.height = window.frame.size.height - statusBarFrame.size.height;
+            trayFrame.origin.y = statusBarFrame.size.height;
             trayFrame.origin.x = 0;
             self.frame = trayFrame;
             break;
