@@ -18,6 +18,7 @@
 
 @synthesize slideView = _slideView;
 @synthesize displayed = _displayed;
+@synthesize trayPosition = _trayPosition;
 
 - (id)initWithFrame:(CGRect)frame {
     if (([super initWithFrame:frame])) {
@@ -64,39 +65,77 @@
     self.transform = CGAffineTransformIdentity;
     CGRect trayFrame = self.frame;
     CGRect statusBarFrame = [[UIApplication sharedApplication] statusBarFrame];
-    switch (_orientation) {
-        case UIInterfaceOrientationPortraitUpsideDown:
-            trayFrame.size.height = window.frame.size.height - statusBarFrame.size.height;
-            trayFrame.origin.y = 0;
-            trayFrame.origin.x = window.frame.size.width - self.frame.size.width;
-            self.frame = trayFrame;
-            self.transform = CGAffineTransformMakeRotation(M_PI);
+    switch (_trayPosition) {
+        case TrayPositionRight:
+            switch (_orientation) {
+                case UIInterfaceOrientationPortraitUpsideDown:
+                    trayFrame.size.height = window.frame.size.height - statusBarFrame.size.height;
+                    trayFrame.origin.y = 0;
+                    trayFrame.origin.x = 0;
+                    self.frame = trayFrame;
+                    self.transform = CGAffineTransformMakeRotation(M_PI);
+                    break;
+                case UIInterfaceOrientationLandscapeLeft:
+                    trayFrame.size.height = window.frame.size.width - statusBarFrame.size.width;
+                    self.frame = trayFrame;
+                    self.transform = CGAffineTransformMakeRotation(-M_PI_2);
+                    trayFrame = self.frame;
+                    trayFrame.origin.x = statusBarFrame.size.width;
+                    trayFrame.origin.y = 0;
+                    self.frame = trayFrame;
+                    break;
+                case UIInterfaceOrientationLandscapeRight:
+                    trayFrame.size.height = window.frame.size.width - statusBarFrame.size.width;
+                    self.frame = trayFrame;
+                    self.transform = CGAffineTransformMakeRotation(M_PI_2);
+                    trayFrame = self.frame;
+                    trayFrame.origin.x = 0;
+                    trayFrame.origin.y = window.frame.size.height - self.frame.size.height;
+                    self.frame = trayFrame;
+                    break;
+                case UIInterfaceOrientationPortrait:
+                default:
+                    trayFrame.size.height = window.frame.size.height - statusBarFrame.size.height;
+                    trayFrame.origin.y = statusBarFrame.size.height;
+                    trayFrame.origin.x = window.frame.size.width - self.frame.size.width;
+                    self.frame = trayFrame;
+            }
             break;
-        case UIInterfaceOrientationLandscapeLeft:
-            trayFrame.size.height = window.frame.size.width - statusBarFrame.size.width;
-            self.frame = trayFrame;
-            self.transform = CGAffineTransformMakeRotation(-M_PI_2);
-            trayFrame = self.frame;
-            trayFrame.origin.x = statusBarFrame.size.width;
-            trayFrame.origin.y = window.frame.size.height - self.frame.size.height;
-            self.frame = trayFrame;
-            break;
-        case UIInterfaceOrientationLandscapeRight:
-            trayFrame.size.height = window.frame.size.width - statusBarFrame.size.width;
-            self.frame = trayFrame;
-            self.transform = CGAffineTransformMakeRotation(M_PI_2);
-            trayFrame = self.frame;
-            trayFrame.origin.x = 0;
-            trayFrame.origin.y = 0;
-            self.frame = trayFrame;
-            break;
-        case UIInterfaceOrientationPortrait:
+        case TrayPositionLeft:
         default:
-            trayFrame.size.height = window.frame.size.height - statusBarFrame.size.height;
-            trayFrame.origin.y = statusBarFrame.size.height;
-            trayFrame.origin.x = 0;
-            self.frame = trayFrame;
-            break;
+            switch (_orientation) {
+                case UIInterfaceOrientationPortraitUpsideDown:
+                    trayFrame.size.height = window.frame.size.height - statusBarFrame.size.height;
+                    trayFrame.origin.y = 0;
+                    trayFrame.origin.x = window.frame.size.width - self.frame.size.width;
+                    self.frame = trayFrame;
+                    self.transform = CGAffineTransformMakeRotation(M_PI);
+                    break;
+                case UIInterfaceOrientationLandscapeLeft:
+                    trayFrame.size.height = window.frame.size.width - statusBarFrame.size.width;
+                    self.frame = trayFrame;
+                    self.transform = CGAffineTransformMakeRotation(-M_PI_2);
+                    trayFrame = self.frame;
+                    trayFrame.origin.x = statusBarFrame.size.width;
+                    trayFrame.origin.y = window.frame.size.height - self.frame.size.height;
+                    self.frame = trayFrame;
+                    break;
+                case UIInterfaceOrientationLandscapeRight:
+                    trayFrame.size.height = window.frame.size.width - statusBarFrame.size.width;
+                    self.frame = trayFrame;
+                    self.transform = CGAffineTransformMakeRotation(M_PI_2);
+                    trayFrame = self.frame;
+                    trayFrame.origin.x = 0;
+                    trayFrame.origin.y = 0;
+                    self.frame = trayFrame;
+                    break;
+                case UIInterfaceOrientationPortrait:
+                default:
+                    trayFrame.size.height = window.frame.size.height - statusBarFrame.size.height;
+                    trayFrame.origin.y = statusBarFrame.size.height;
+                    trayFrame.origin.x = 0;
+                    self.frame = trayFrame;
+            }
     }
     [window addSubview:self];
     [window sendSubviewToBack:self];
@@ -107,20 +146,39 @@
     _slideView.layer.shadowPath = [UIBezierPath bezierPathWithRect:_slideView.bounds].CGPath;
     [UIView animateWithDuration:duration animations:^{
         CGRect frame = _slideView.frame;
-        switch (_orientation) {
-            case UIInterfaceOrientationPortraitUpsideDown:
-                frame.origin.x = -self.bounds.size.width;
+        switch (_trayPosition) {
+            case TrayPositionRight:
+                switch (_orientation) {
+                    case UIInterfaceOrientationPortraitUpsideDown:
+                        frame.origin.x = self.bounds.size.width;
+                        break;
+                    case UIInterfaceOrientationLandscapeLeft:
+                        frame.origin.y = self.bounds.size.width;
+                        break;
+                    case UIInterfaceOrientationLandscapeRight:
+                        frame.origin.y = -self.bounds.size.width;
+                        break;
+                    case UIInterfaceOrientationPortrait:
+                    default:
+                        frame.origin.x = -self.bounds.size.width;
+                }
                 break;
-            case UIInterfaceOrientationLandscapeLeft:
-                frame.origin.y = -self.bounds.size.width;
-                break;
-            case UIInterfaceOrientationLandscapeRight:
-                frame.origin.y = self.bounds.size.width;
-                break;
-            case UIInterfaceOrientationPortrait:
+            case TrayPositionLeft:
             default:
-                frame.origin.x = self.bounds.size.width;
-                break;
+                switch (_orientation) {
+                    case UIInterfaceOrientationPortraitUpsideDown:
+                        frame.origin.x = -self.bounds.size.width;
+                        break;
+                    case UIInterfaceOrientationLandscapeLeft:
+                        frame.origin.y = -self.bounds.size.width;
+                        break;
+                    case UIInterfaceOrientationLandscapeRight:
+                        frame.origin.y = self.bounds.size.width;
+                        break;
+                    case UIInterfaceOrientationPortrait:
+                    default:
+                        frame.origin.x = self.bounds.size.width;
+                }
         }
         _slideView.frame = frame;
     }];

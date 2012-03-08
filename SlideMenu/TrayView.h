@@ -7,6 +7,11 @@
 
 #import <UIKit/UIKit.h>
 
+typedef enum {
+    TrayPositionLeft = 0,
+    TrayPositionRight = 1
+} TrayPosition;
+
 @interface TrayView : UIView {
     UIImageView *_backgroundImageView;
     UIInterfaceOrientation _orientation;
@@ -15,6 +20,7 @@
 
 @property (nonatomic, readonly, getter = isDisplayed) BOOL displayed;
 @property (nonatomic, retain) UIImage *backgroundImage;
+@property (nonatomic, assign) TrayPosition trayPosition;
 
 -(void)showInWindow:(UIWindow*)window;
 -(void)showInWindow:(UIWindow*)window withDuration:(NSTimeInterval)duration;
