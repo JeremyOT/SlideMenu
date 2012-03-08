@@ -27,15 +27,19 @@
 +(SlideMenu*)sharedMenu {
     static SlideMenu *sharedMenu = nil;
     if (!sharedMenu) {
-        sharedMenu = [[SlideMenu alloc] initWithFrame:CGRectMake(0, 0, 280, 480)];
+        sharedMenu = [[SlideMenu alloc] initWithDefaultFrame];
     }
     return sharedMenu;
 }
 
 #pragma mark - Lifecycle
 
-- (id)initWithFrame:(CGRect)frame {
-    if (([super initWithFrame:frame])) {
+-(id)initWithDefaultFrame { 
+    return [self initWithFrame:CGRectMake(0, 0, 280, 480)];
+}
+
+-(id)initWithFrame:(CGRect)frame {
+    if ((self = [super initWithFrame:frame])) {
         _tableView = [[UITableView alloc] initWithFrame:self.bounds];
         _tableView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         _tableView.backgroundColor = [UIColor clearColor];
