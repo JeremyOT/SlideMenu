@@ -34,7 +34,7 @@
 
 +(SlideMenu*)sharedMenuRight {
     static SlideMenu *sharedMenuRight = nil;
-    if (!sharedMenu) {
+    if (!sharedMenuRight) {
         sharedMenuRight = [[SlideMenu alloc] initWithDefaultFrame];
         sharedMenuRight.trayPosition = TrayPositionRight;
     }
