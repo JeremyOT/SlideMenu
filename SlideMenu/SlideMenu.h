@@ -24,6 +24,7 @@
 @property (nonatomic, assign) NSObject<SlideMenuDelegate>* delegate;
 
 +(SlideMenu*)sharedMenu;
++(SlideMenu*)sharedMenuRight;
 
 -(id)initWithDefaultFrame;
 

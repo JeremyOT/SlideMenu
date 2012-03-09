@@ -32,6 +32,15 @@
     return sharedMenu;
 }
 
++(SlideMenu*)sharedMenuRight {
+    static SlideMenu *sharedMenuRight = nil;
+    if (!sharedMenu) {
+        sharedMenuRight = [[SlideMenu alloc] initWithDefaultFrame];
+        sharedMenuRight.trayPosition = TrayPositionRight;
+    }
+    return sharedMenuRight;
+}
+
 #pragma mark - Lifecycle
 
 -(id)initWithDefaultFrame { 
