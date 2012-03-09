@@ -10,5 +10,6 @@
 @interface SMViewController : UIViewController
 
 -(IBAction)showMenu:(id)sender;
+-(IBAction)showMenuRight:(id)sender;
 
 @end

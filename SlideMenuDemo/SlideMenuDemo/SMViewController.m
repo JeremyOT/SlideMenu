@@ -23,23 +23,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    SlideMenu *menu = [SlideMenu sharedMenu];
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        [menu setUIInterfaceOrientation:UIInterfaceOrientationPortraitUpsideDown supported:NO];
-        [menu setUIInterfaceOrientation:UIInterfaceOrientationLandscapeLeft supported:NO];
-        [menu setUIInterfaceOrientation:UIInterfaceOrientationLandscapeRight supported:NO];
+        [[SlideMenu sharedMenu] setUIInterfaceOrientation:UIInterfaceOrientationPortraitUpsideDown supported:NO];
+        [[SlideMenu sharedMenu] setUIInterfaceOrientation:UIInterfaceOrientationLandscapeLeft supported:NO];
+        [[SlideMenu sharedMenu] setUIInterfaceOrientation:UIInterfaceOrientationLandscapeRight supported:NO];
+        [[SlideMenu sharedMenuRight] setUIInterfaceOrientation:UIInterfaceOrientationPortraitUpsideDown supported:NO];
+        [[SlideMenu sharedMenuRight] setUIInterfaceOrientation:UIInterfaceOrientationLandscapeLeft supported:NO];
+        [[SlideMenu sharedMenuRight] setUIInterfaceOrientation:UIInterfaceOrientationLandscapeRight supported:NO];
     }
     BOOL (^block)(SlideMenuItem *item) = ^(SlideMenuItem *item) {
         NSLog(@"Clicked: %@", item.title);
         return YES;
     };
-    [menu clearItems];
+    [[SlideMenu sharedMenu] clearItems];
+    [[SlideMenu sharedMenu] clearItems];
     NSArray *items = [NSArray arrayWithObjects:
                       [[[SlideMenuItem alloc] initWithTitle:@"Item 1" block:block accessoryType:UITableViewCellAccessoryDisclosureIndicator] autorelease],
                       [[[SlideMenuItem alloc] initWithTitle:@"Item 2" block:block] autorelease],
                       [[[SlideMenuItem alloc] initWithTitle:@"Item 3" block:block] autorelease],
                       nil];
-    [menu addSectionWithName:@"Header 1" items:items];
+    [[SlideMenu sharedMenu] addSectionWithName:@"Header 1" items:items];
+    [[SlideMenu sharedMenuRight] addSectionWithName:@"Header Right 1" items:items];
     UIView *accView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)] autorelease];
     accView.layer.cornerRadius = 10;
     accView.backgroundColor = [UIColor whiteColor];
@@ -48,7 +52,8 @@
                           [[[SlideMenuItem alloc] initWithTitle:@"Item 5" block:block accessoryType:UITableViewCellAccessoryNone icon:nil textColor:[UIColor lightGrayColor] backgroundColor:nil] autorelease],
                           [[[SlideMenuItem alloc] initWithTitle:@"Item 6" block:block accessoryType:UITableViewCellAccessoryNone icon:nil textColor:nil backgroundColor:[UIColor darkGrayColor]] autorelease],
                           nil];
-    [menu addSectionWithName:@"Header 2" items:moreItems];
+    [[SlideMenu sharedMenu] addSectionWithName:@"Header 2" items:moreItems];
+    [[SlideMenu sharedMenuRight] addSectionWithName:@"Header Right 2" items:moreItems];
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
@@ -91,6 +96,15 @@
 
 -(void)showMenu:(id)sender {
     SlideMenu *menu = [SlideMenu sharedMenu];
+    if (!menu.displayed) {
+        [menu showInWindow:self.view.window];
+    } else {
+        [menu hide];
+    }
+}
+
+-(void)showMenuRight:(id)sender {
+    SlideMenu *menu = [SlideMenu sharedMenuRight];
     if (!menu.displayed) {
         [menu showInWindow:self.view.window];
     } else {

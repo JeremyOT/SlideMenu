@@ -82,7 +82,7 @@
 #pragma mark - Adding Items
 
 -(UIView*)defaultHeaderForSectionName:(NSString*)name color:(UIColor*)color {
-    UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 24)] autorelease];
+    UIView *header = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, self.bounds.size.width, 32)] autorelease];
     header.backgroundColor = [UIColor clearColor];
     CAGradientLayer *gradientLayer = [CAGradientLayer layer];
     gradientLayer.colors = [NSArray arrayWithObjects:
@@ -97,8 +97,8 @@
                                nil];
     gradientLayer.frame = header.bounds;
     [header.layer insertSublayer:gradientLayer atIndex:0];
-    UILabel *headerLabel = [[[UILabel alloc] initWithFrame:CGRectMake(8, 4, self.bounds.size.width-16, 16)] autorelease];
-    headerLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:12.0];
+    UILabel *headerLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, 0, self.bounds.size.width-20, 32)] autorelease];
+    headerLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:15.0];
     headerLabel.textColor = color;
     headerLabel.text = name;
     headerLabel.backgroundColor = [UIColor clearColor];
@@ -190,7 +190,7 @@
                                    nil];
         gradientLayer.frame = cell.bounds;
         [cell.layer insertSublayer:gradientLayer atIndex:0];
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:16.0];
+        cell.textLabel.font = [UIFont boldSystemFontOfSize:19.0];
     }
     cell.textLabel.text = item.title;
     cell.textLabel.textColor = item.textColor;
