@@ -20,7 +20,6 @@
 @synthesize tableView = _tableView;
 @synthesize headers = _headers;
 @synthesize sections = _sections;
-@synthesize delegate = _delegate;
 
 #pragma mark - Singleton
 
@@ -163,41 +162,11 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     SlideMenuItem *item = [self itemAtIndexPath:indexPath];
-    if (_delegate && [_delegate respondsToSelector:@selector(slideMenu:cellForItem:tableView:indexPath:)]) {
-        return [_delegate slideMenu:self cellForItem:item tableView:self.tableView indexPath:indexPath];
-    }
-    static NSString *identifier = @"SlideMenuCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:item.cellReuseIdentifier];
     if (!cell) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier] autorelease];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        CAGradientLayer *gradientLayer = [CAGradientLayer layer];
-        gradientLayer.colors = [NSArray arrayWithObjects:
-                                (id)[[UIColor colorWithRed:1 green:1 blue:1 alpha:0.05] CGColor],
-                                (id)[[UIColor colorWithRed:1 green:1 blue:1 alpha:0.05] CGColor],
-                                (id)[[UIColor colorWithRed:0 green:0 blue:0 alpha:0] CGColor],
-                                (id)[[UIColor colorWithRed:0 green:0 blue:0 alpha:0] CGColor],
-                                (id)[[UIColor colorWithRed:0 green:0 blue:0 alpha:0.2] CGColor],
-                                (id)[[UIColor colorWithRed:0 green:0 blue:0 alpha:0.2] CGColor],
-                                nil];
-        gradientLayer.locations = [NSArray arrayWithObjects:
-                                   [NSNumber numberWithFloat:0],
-                                   [NSNumber numberWithFloat:0.023],
-                                   [NSNumber numberWithFloat:0.023],
-                                   [NSNumber numberWithFloat:0.977],
-                                   [NSNumber numberWithFloat:0.977],
-                                   [NSNumber numberWithFloat:1.0],
-                                   nil];
-        gradientLayer.frame = cell.bounds;
-        [cell.layer insertSublayer:gradientLayer atIndex:0];
-        cell.textLabel.font = [UIFont boldSystemFontOfSize:19.0];
+        cell = [item generatedCell];
     }
-    cell.textLabel.text = item.title;
-    cell.textLabel.textColor = item.textColor;
-    cell.imageView.image = item.icon;
-    cell.contentView.backgroundColor = item.backgroundColor;
-    cell.accessoryType = item.accessoryType;
-    cell.accessoryView = item.accessoryView;
+    [item configureTableViewCell:cell];
     return cell;
 }
 

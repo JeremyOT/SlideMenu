@@ -6,6 +6,7 @@
 //
 
 #import "SlideMenuItem.h"
+#import <QuartzCore/QuartzCore.h>
 
 @implementation SlideMenuItem
 
@@ -65,6 +66,47 @@
 
 -(BOOL)runBlock {
     return _block(self);
+}
+
+#pragma mark - Cell Population
+
+-(NSString*)cellReuseIdentifier {
+    return NSStringFromClass([self class]);
+}
+
+-(UITableViewCell*)generatedCell {
+    UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:self.cellReuseIdentifier] autorelease];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+    gradientLayer.colors = [NSArray arrayWithObjects:
+                            (id)[[UIColor colorWithRed:1 green:1 blue:1 alpha:0.05] CGColor],
+                            (id)[[UIColor colorWithRed:1 green:1 blue:1 alpha:0.05] CGColor],
+                            (id)[[UIColor colorWithRed:0 green:0 blue:0 alpha:0] CGColor],
+                            (id)[[UIColor colorWithRed:0 green:0 blue:0 alpha:0] CGColor],
+                            (id)[[UIColor colorWithRed:0 green:0 blue:0 alpha:0.2] CGColor],
+                            (id)[[UIColor colorWithRed:0 green:0 blue:0 alpha:0.2] CGColor],
+                            nil];
+    gradientLayer.locations = [NSArray arrayWithObjects:
+                               [NSNumber numberWithFloat:0],
+                               [NSNumber numberWithFloat:0.023],
+                               [NSNumber numberWithFloat:0.023],
+                               [NSNumber numberWithFloat:0.977],
+                               [NSNumber numberWithFloat:0.977],
+                               [NSNumber numberWithFloat:1.0],
+                               nil];
+    gradientLayer.frame = cell.bounds;
+    [cell.layer insertSublayer:gradientLayer atIndex:0];
+    cell.textLabel.font = [UIFont boldSystemFontOfSize:19.0];
+    return cell;
+}
+
+-(void)configureTableViewCell:(UITableViewCell*)cell {
+    cell.textLabel.text = self.title;
+    cell.textLabel.textColor = self.textColor;
+    cell.imageView.image = self.icon;
+    cell.contentView.backgroundColor = self.backgroundColor;
+    cell.accessoryType = self.accessoryType;
+    cell.accessoryView = self.accessoryView;
 }
 
 @end

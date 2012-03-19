@@ -11,17 +11,9 @@
 
 @class SlideMenu;
 
-@protocol SlideMenuDelegate <NSObject>
-
-@optional
--(UITableViewCell*)slideMenu:(SlideMenu*)slideMenu cellForItem:(SlideMenuItem*)item tableView:(UITableView*)tableView indexPath:(NSIndexPath*)indexPath;
-
-@end
-
 @interface SlideMenu : TrayView <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, readonly) UITableView *tableView;
-@property (nonatomic, assign) NSObject<SlideMenuDelegate>* delegate;
 
 +(SlideMenu*)sharedMenu;
 +(SlideMenu*)sharedMenuRight;
