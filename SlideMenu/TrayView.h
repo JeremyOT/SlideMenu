@@ -23,6 +23,8 @@ typedef enum {
 @property (nonatomic, assign) TrayPosition trayPosition;
 @property (nonatomic) BOOL bouncesOnClose;
 @property (nonatomic) NSTimeInterval defaultAnimationDuration;
+@property (nonatomic, copy) void (^closedBlock)();
+@property (nonatomic, copy) void (^bouncedBlock)();
 
 -(void)showInWindow:(UIWindow*)window;
 -(void)showInWindow:(UIWindow*)window withDuration:(NSTimeInterval)duration;

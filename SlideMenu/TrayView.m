@@ -21,6 +21,10 @@
 @synthesize trayPosition = _trayPosition;
 @synthesize bouncesOnClose = _bouncesOnClose;
 @synthesize defaultAnimationDuration = _defaultAnimationDuration;
+@synthesize closedBlock = _closedBlock;
+@synthesize bouncedBlock = _bouncedBlock;
+
+#pragma mark - Lifecycle
 
 - (id)initWithFrame:(CGRect)frame {
     if (([super initWithFrame:frame])) {
@@ -40,6 +44,16 @@
     }
     return self;
 }
+
+- (void)dealloc {
+    [_slideView release];
+    [_backgroundImageView release];
+    [_closedBlock release];
+    [_bouncedBlock release];
+    [super dealloc];
+}
+
+#pragma mark - Display
 
 -(UIImage *)backgroundImage {
     return _backgroundImageView.image;
@@ -212,6 +226,9 @@
             [self removeFromSuperview];
             _slideView.clipsToBounds = YES;
             _slideView = nil;
+            if (_closedBlock) {
+                _closedBlock();
+            }
         }];
     };
     if (bounce) {
@@ -234,6 +251,9 @@
             }
             _slideView.frame = frame;
         } completion: ^(BOOL completed) {
+            if (_bouncedBlock) {
+                _bouncedBlock();
+            }
             closeAnimation();
         }];
     } else {

@@ -51,7 +51,18 @@
     NSArray *moreItems = [NSArray arrayWithObjects:
                           [[[SlideMenuItem alloc] initWithTitle:@"Item 4" block:block accessoryView:accView] autorelease],
                           [[[SlideMenuItem alloc] initWithTitle:@"Item 5" block:block accessoryType:UITableViewCellAccessoryNone icon:nil textColor:[UIColor lightGrayColor] backgroundColor:nil] autorelease],
-                          [[[SlideMenuItem alloc] initWithTitle:@"Item 6" block:block accessoryType:UITableViewCellAccessoryNone icon:nil textColor:nil backgroundColor:[UIColor darkGrayColor]] autorelease],
+                          [[[SlideMenuItem alloc] initWithTitle:@"Item 6" block:^(SlideMenuItem *item){
+        [[SlideMenu sharedMenuRight] setBouncedBlock:^(){
+            NSLog(@"Bounced: %@", item.title);
+            [[SlideMenu sharedMenuRight] setBouncedBlock:nil];
+        }];
+        [[SlideMenu sharedMenuRight] setClosedBlock:^(){
+            NSLog(@"Closed: %@", item.title);
+            [[SlideMenu sharedMenuRight] setClosedBlock:nil];
+        }];
+        NSLog(@"Clicked: %@", item.title);
+        return YES;
+    }accessoryType:UITableViewCellAccessoryNone icon:nil textColor:nil backgroundColor:[UIColor darkGrayColor]] autorelease],
                           nil];
     [[SlideMenu sharedMenu] addSectionWithName:@"Header 2" items:moreItems];
     [[SlideMenu sharedMenuRight] addSectionWithName:@"Header Right 2" items:moreItems];
