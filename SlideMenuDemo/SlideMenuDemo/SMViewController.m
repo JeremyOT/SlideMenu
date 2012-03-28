@@ -31,6 +31,7 @@
         [[SlideMenu sharedMenuRight] setUIInterfaceOrientation:UIInterfaceOrientationLandscapeLeft supported:NO];
         [[SlideMenu sharedMenuRight] setUIInterfaceOrientation:UIInterfaceOrientationLandscapeRight supported:NO];
     }
+    [[SlideMenu sharedMenuRight] setBouncesOnClose:YES];
     BOOL (^block)(SlideMenuItem *item) = ^(SlideMenuItem *item) {
         NSLog(@"Clicked: %@", item.title);
         return YES;
@@ -99,7 +100,7 @@
     if (!menu.displayed) {
         [menu showInWindow:self.view.window];
     } else {
-        [menu hide];
+        [menu hideWithDuration:menu.defaultAnimationDuration bounce:NO];
     }
 }
 
@@ -108,7 +109,7 @@
     if (!menu.displayed) {
         [menu showInWindow:self.view.window];
     } else {
-        [menu hide];
+        [menu hideWithDuration:menu.defaultAnimationDuration bounce:NO];
     }
 }
 

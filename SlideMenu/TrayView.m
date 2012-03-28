@@ -19,6 +19,8 @@
 @synthesize slideView = _slideView;
 @synthesize displayed = _displayed;
 @synthesize trayPosition = _trayPosition;
+@synthesize bouncesOnClose = _bouncesOnClose;
+@synthesize defaultAnimationDuration = _defaultAnimationDuration;
 
 - (id)initWithFrame:(CGRect)frame {
     if (([super initWithFrame:frame])) {
@@ -32,6 +34,7 @@
         _supportedOrientations[UIDeviceOrientationFaceUp] = NO;
         _supportedOrientations[UIDeviceOrientationFaceDown] = NO;
         _orientation = [[UIApplication sharedApplication] statusBarOrientation];
+        _defaultAnimationDuration = 0.25;
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     }
@@ -57,7 +60,7 @@
 }
 
 -(void)showInWindow:(UIWindow *)window {
-    [self showInWindow:window withDuration:0.5];
+    [self showInWindow:window withDuration:_defaultAnimationDuration];
 }
 
 -(void)showInWindow:(UIWindow *)window withDuration:(NSTimeInterval)duration {
@@ -185,30 +188,57 @@
 }
 
 -(void)hide {
-    [self hideWithDuration:0.5];
+    [self hideWithDuration:_defaultAnimationDuration bounce:_bouncesOnClose];
 }
 
--(void)hideWithDuration:(NSTimeInterval)duration {
+-(void)hideWithDuration:(NSTimeInterval)duration bounce:(BOOL)bounce{
     _displayed = NO;
-    [UIView animateWithDuration:duration animations:^{
-        CGRect frame = _slideView.frame;
-        switch (_orientation) {
-            case UIInterfaceOrientationLandscapeLeft:
-            case UIInterfaceOrientationLandscapeRight:
-                frame.origin.y = 0;
-                break;
-            case UIInterfaceOrientationPortraitUpsideDown:
-            case UIInterfaceOrientationPortrait:
-            default:
-                frame.origin.x = 0;
-                break;
-        }
-        _slideView.frame = frame;
-    } completion:^(BOOL finished) {
-        [self removeFromSuperview];
-        _slideView.clipsToBounds = YES;
-        _slideView = nil;
-    }];
+    void (^closeAnimation)() = ^{
+        [UIView animateWithDuration:duration animations:^{
+            CGRect frame = _slideView.frame;
+            switch (_orientation) {
+                case UIInterfaceOrientationLandscapeLeft:
+                case UIInterfaceOrientationLandscapeRight:
+                    frame.origin.y = 0;
+                    break;
+                case UIInterfaceOrientationPortraitUpsideDown:
+                case UIInterfaceOrientationPortrait:
+                default:
+                    frame.origin.x = 0;
+                    break;
+            }
+            _slideView.frame = frame;
+        } completion:^(BOOL finished) {
+            [self removeFromSuperview];
+            _slideView.clipsToBounds = YES;
+            _slideView = nil;
+        }];
+    };
+    if (bounce) {
+        [UIView animateWithDuration:duration animations:^{
+            CGRect frame = _slideView.frame;
+            switch (_orientation) {
+                case UIInterfaceOrientationLandscapeLeft:
+                    frame.origin.y = _trayPosition == TrayPositionLeft ? -frame.size.height : frame.size.height;
+                    break;
+                case UIInterfaceOrientationLandscapeRight:
+                    frame.origin.y = _trayPosition == TrayPositionLeft ? frame.size.height : -frame.size.height;
+                    break;
+                case UIInterfaceOrientationPortraitUpsideDown:
+                    frame.origin.x = _trayPosition == TrayPositionLeft ? -frame.size.width : frame.size.width;
+                    break;
+                case UIInterfaceOrientationPortrait:
+                default:
+                    frame.origin.x = _trayPosition == TrayPositionLeft ? frame.size.width : -frame.size.width;
+                    break;
+            }
+            _slideView.frame = frame;
+        } completion: ^(BOOL completed) {
+            closeAnimation();
+        }];
+    } else {
+        closeAnimation();
+    }
 }
 
 -(void)setUIInterfaceOrientation:(UIInterfaceOrientation)orientation supported:(BOOL)supported {

@@ -21,11 +21,13 @@ typedef enum {
 @property (nonatomic, readonly, getter = isDisplayed) BOOL displayed;
 @property (nonatomic, retain) UIImage *backgroundImage;
 @property (nonatomic, assign) TrayPosition trayPosition;
+@property (nonatomic) BOOL bouncesOnClose;
+@property (nonatomic) NSTimeInterval defaultAnimationDuration;
 
 -(void)showInWindow:(UIWindow*)window;
 -(void)showInWindow:(UIWindow*)window withDuration:(NSTimeInterval)duration;
 -(void)hide;
--(void)hideWithDuration:(NSTimeInterval)duration;
+-(void)hideWithDuration:(NSTimeInterval)duration bounce:(BOOL)bounce;
 -(void)setUIInterfaceOrientation:(UIInterfaceOrientation)orientation supported:(BOOL)supported;
 
 @end
