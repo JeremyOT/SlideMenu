@@ -77,6 +77,15 @@
     [self showInWindow:window withDuration:_defaultAnimationDuration];
 }
 
+-(void)showUnderViewController:(UIViewController *)controller {
+    [self showUnderViewController:controller withDuration:_defaultAnimationDuration];
+}
+
+-(void)showUnderViewController:(UIViewController *)controller withDuration:(NSTimeInterval)duration {
+    [self showInWindow:controller.view.window withDuration:duration];
+    [controller.view.window insertSubview:self belowSubview:controller.view];
+}
+
 -(void)showInWindow:(UIWindow *)window withDuration:(NSTimeInterval)duration {
     _displayed = YES;
     self.transform = CGAffineTransformIdentity;

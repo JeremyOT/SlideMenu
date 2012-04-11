@@ -28,6 +28,8 @@ typedef enum {
 
 -(void)showInWindow:(UIWindow*)window;
 -(void)showInWindow:(UIWindow*)window withDuration:(NSTimeInterval)duration;
+-(void)showUnderViewController:(UIViewController*)controller;
+-(void)showUnderViewController:(UIViewController*)controller withDuration:(NSTimeInterval)duration;
 -(void)hide;
 -(void)hideWithDuration:(NSTimeInterval)duration bounce:(BOOL)bounce;
 -(void)setUIInterfaceOrientation:(UIInterfaceOrientation)orientation supported:(BOOL)supported;

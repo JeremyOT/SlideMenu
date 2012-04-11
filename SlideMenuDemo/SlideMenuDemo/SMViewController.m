@@ -109,6 +109,7 @@
 -(void)showMenu:(id)sender {
     SlideMenu *menu = [SlideMenu sharedMenu];
     if (!menu.displayed) {
+        [menu showUnderViewController:self];
         [menu showInWindow:self.view.window];
     } else {
         [menu hideWithDuration:menu.defaultAnimationDuration bounce:NO];
@@ -118,7 +119,7 @@
 -(void)showMenuRight:(id)sender {
     SlideMenu *menu = [SlideMenu sharedMenuRight];
     if (!menu.displayed) {
-        [menu showInWindow:self.view.window];
+        [menu showUnderViewController:self];
     } else {
         [menu hideWithDuration:menu.defaultAnimationDuration bounce:NO];
     }
