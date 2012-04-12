@@ -170,13 +170,12 @@
                     self.frame = trayFrame;
             }
     }
-    [window addSubview:self];
-    [window sendSubviewToBack:self];
     _slideView = view;
     _slideView.layer.masksToBounds = NO;
     _slideView.layer.shadowRadius = 8;
     _slideView.layer.shadowOpacity = 0.5;
     _slideView.layer.shadowPath = [UIBezierPath bezierPathWithRect:_slideView.bounds].CGPath;
+    [window insertSubview:self belowSubview:_slideView];
     [UIView animateWithDuration:duration animations:^{
         CGRect frame = _slideView.frame;
         switch (_trayPosition) {
