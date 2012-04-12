@@ -26,8 +26,10 @@ typedef enum {
 @property (nonatomic, copy) void (^closedBlock)();
 @property (nonatomic, copy) void (^bouncedBlock)();
 
+-(id)initWithDefaultFrame;
 -(void)showInWindow:(UIWindow*)window;
 -(void)showInWindow:(UIWindow*)window withDuration:(NSTimeInterval)duration;
+-(void)showInWindow:(UIWindow *)window underView:(UIView*)view withDuration:(NSTimeInterval)duration;
 -(void)showUnderViewController:(UIViewController*)controller;
 -(void)showUnderViewController:(UIViewController*)controller withDuration:(NSTimeInterval)duration;
 -(void)hide;

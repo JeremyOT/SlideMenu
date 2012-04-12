@@ -42,10 +42,6 @@
 
 #pragma mark - Lifecycle
 
--(id)initWithDefaultFrame { 
-    return [self initWithFrame:CGRectMake(0, 0, 280, 480)];
-}
-
 -(id)initWithFrame:(CGRect)frame {
     if ((self = [super initWithFrame:frame])) {
         _tableView = [[UITableView alloc] initWithFrame:self.bounds];

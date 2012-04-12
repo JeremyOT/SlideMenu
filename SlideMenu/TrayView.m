@@ -26,6 +26,10 @@
 
 #pragma mark - Lifecycle
 
+-(id)initWithDefaultFrame { 
+    return [self initWithFrame:CGRectMake(0, 0, 280, 480)];
+}
+
 - (id)initWithFrame:(CGRect)frame {
     if (([super initWithFrame:frame])) {
         self.backgroundColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1];
@@ -82,11 +86,14 @@
 }
 
 -(void)showUnderViewController:(UIViewController *)controller withDuration:(NSTimeInterval)duration {
-    [self showInWindow:controller.view.window withDuration:duration];
-    [controller.view.window insertSubview:self belowSubview:controller.view];
+    [self showInWindow:controller.view.window underView:controller.view withDuration:duration];
 }
 
 -(void)showInWindow:(UIWindow *)window withDuration:(NSTimeInterval)duration {
+    [self showInWindow:window underView:window.rootViewController.view withDuration:duration];
+}
+
+-(void)showInWindow:(UIWindow *)window underView:(UIView*)view withDuration:(NSTimeInterval)duration {
     _displayed = YES;
     self.transform = CGAffineTransformIdentity;
     CGRect trayFrame = self.frame;
@@ -165,7 +172,7 @@
     }
     [window addSubview:self];
     [window sendSubviewToBack:self];
-    _slideView = window.rootViewController.view;
+    _slideView = view;
     _slideView.layer.masksToBounds = NO;
     _slideView.layer.shadowRadius = 8;
     _slideView.layer.shadowOpacity = 0.5;

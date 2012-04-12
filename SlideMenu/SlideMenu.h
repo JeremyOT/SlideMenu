@@ -18,8 +18,6 @@
 +(SlideMenu*)sharedMenu;
 +(SlideMenu*)sharedMenuRight;
 
--(id)initWithDefaultFrame;
-
 -(UIView*)headerForSection:(NSInteger)section;
 -(SlideMenuItem*)itemAtIndexPath:(NSIndexPath*)indexPath;
 
