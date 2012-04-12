@@ -58,11 +58,10 @@
         [[SlideMenu sharedMenuRight] setClosedBlock:^(){
             NSLog(@"Closed: %@", item.title);
             [[SlideMenu sharedMenuRight] setClosedBlock:nil];
-            [[SlideMenu sharedMenuRight] setBouncesOnClose:NO];
         }];
         NSLog(@"Clicked: %@", item.title);
-        [[SlideMenu sharedMenuRight] setBouncesOnClose:YES];
-        return YES;
+        [[SlideMenu sharedMenuRight] hideWithDuration:[[SlideMenu sharedMenuRight] defaultAnimationDuration] bounce:YES];
+        return NO;
     } accessoryType:UITableViewCellAccessoryNone icon:nil textColor:nil backgroundColor:[UIColor darkGrayColor]] autorelease],
                           nil];
     [[SlideMenu sharedMenu] addSectionWithName:@"Header 2" items:moreItems];

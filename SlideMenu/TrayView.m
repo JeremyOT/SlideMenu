@@ -20,11 +20,10 @@
 @synthesize slideView = _slideView;
 @synthesize displayed = _displayed;
 @synthesize trayPosition = _trayPosition;
-@synthesize bouncesOnClose = _bouncesOnClose;
 @synthesize defaultAnimationDuration = _defaultAnimationDuration;
 @synthesize closedBlock = _closedBlock;
 @synthesize bouncedBlock = _bouncedBlock;
-@synthesize touchOffToClose = _touchOffToClose;
+@synthesize tapOffToClose = _tapOffToClose;
 @synthesize trayCloseRecognizer = _trayCloseRecognizer;
 
 #pragma mark - Lifecycle
@@ -46,7 +45,7 @@
         _supportedOrientations[UIDeviceOrientationFaceDown] = NO;
         _orientation = [[UIApplication sharedApplication] statusBarOrientation];
         _defaultAnimationDuration = 0.25;
-        _touchOffToClose = YES;
+        _tapOffToClose = YES;
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     }
@@ -180,7 +179,7 @@
     _slideView.layer.shadowRadius = 8;
     _slideView.layer.shadowOpacity = 0.5;
     _slideView.layer.shadowPath = [UIBezierPath bezierPathWithRect:_slideView.bounds].CGPath;
-    if (_touchOffToClose) {
+    if (_tapOffToClose) {
         self.trayCloseRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hide)] autorelease];
         [_slideView addGestureRecognizer:_trayCloseRecognizer];
     }
@@ -226,7 +225,7 @@
 }
 
 -(void)hide {
-    [self hideWithDuration:_defaultAnimationDuration bounce:_bouncesOnClose];
+    [self hideWithDuration:_defaultAnimationDuration bounce:NO];
 }
 
 -(void)hideWithDuration:(NSTimeInterval)duration bounce:(BOOL)bounce{

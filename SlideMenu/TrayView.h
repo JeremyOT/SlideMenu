@@ -21,8 +21,7 @@ typedef enum {
 @property (nonatomic, readonly, getter = isDisplayed) BOOL displayed;
 @property (nonatomic, retain) UIImage *backgroundImage;
 @property (nonatomic, assign) TrayPosition trayPosition;
-@property (nonatomic) BOOL bouncesOnClose;
-@property (nonatomic) BOOL touchOffToClose;
+@property (nonatomic) BOOL tapOffToClose;
 @property (nonatomic) NSTimeInterval defaultAnimationDuration;
 @property (nonatomic, copy) void (^closedBlock)();
 @property (nonatomic, copy) void (^bouncedBlock)();
