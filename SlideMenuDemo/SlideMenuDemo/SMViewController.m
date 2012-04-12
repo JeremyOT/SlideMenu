@@ -31,7 +31,6 @@
         [[SlideMenu sharedMenuRight] setUIInterfaceOrientation:UIInterfaceOrientationLandscapeLeft supported:NO];
         [[SlideMenu sharedMenuRight] setUIInterfaceOrientation:UIInterfaceOrientationLandscapeRight supported:NO];
     }
-    [[SlideMenu sharedMenuRight] setBouncesOnClose:YES];
     BOOL (^block)(SlideMenuItem *item) = ^(SlideMenuItem *item) {
         NSLog(@"Clicked: %@", item.title);
         return YES;
@@ -59,10 +58,12 @@
         [[SlideMenu sharedMenuRight] setClosedBlock:^(){
             NSLog(@"Closed: %@", item.title);
             [[SlideMenu sharedMenuRight] setClosedBlock:nil];
+            [[SlideMenu sharedMenuRight] setBouncesOnClose:NO];
         }];
         NSLog(@"Clicked: %@", item.title);
+        [[SlideMenu sharedMenuRight] setBouncesOnClose:YES];
         return YES;
-    }accessoryType:UITableViewCellAccessoryNone icon:nil textColor:nil backgroundColor:[UIColor darkGrayColor]] autorelease],
+    } accessoryType:UITableViewCellAccessoryNone icon:nil textColor:nil backgroundColor:[UIColor darkGrayColor]] autorelease],
                           nil];
     [[SlideMenu sharedMenu] addSectionWithName:@"Header 2" items:moreItems];
     [[SlideMenu sharedMenuRight] addSectionWithName:@"Header Right 2" items:moreItems];
@@ -110,7 +111,6 @@
     SlideMenu *menu = [SlideMenu sharedMenu];
     if (!menu.displayed) {
         [menu showUnderViewController:self];
-        [menu showInWindow:self.view.window];
     } else {
         [menu hideWithDuration:menu.defaultAnimationDuration bounce:NO];
     }

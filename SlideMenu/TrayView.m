@@ -11,6 +11,7 @@
 @interface TrayView ()
 
 @property (nonatomic, assign) UIView *slideView;
+@property (nonatomic, retain) UITapGestureRecognizer *trayCloseRecognizer;
 
 @end
 
@@ -23,6 +24,8 @@
 @synthesize defaultAnimationDuration = _defaultAnimationDuration;
 @synthesize closedBlock = _closedBlock;
 @synthesize bouncedBlock = _bouncedBlock;
+@synthesize touchOffToClose = _touchOffToClose;
+@synthesize trayCloseRecognizer = _trayCloseRecognizer;
 
 #pragma mark - Lifecycle
 
@@ -43,6 +46,7 @@
         _supportedOrientations[UIDeviceOrientationFaceDown] = NO;
         _orientation = [[UIApplication sharedApplication] statusBarOrientation];
         _defaultAnimationDuration = 0.25;
+        _touchOffToClose = YES;
         [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
     }
@@ -54,6 +58,7 @@
     [_backgroundImageView release];
     [_closedBlock release];
     [_bouncedBlock release];
+    [_trayCloseRecognizer release];
     [super dealloc];
 }
 
@@ -175,6 +180,10 @@
     _slideView.layer.shadowRadius = 8;
     _slideView.layer.shadowOpacity = 0.5;
     _slideView.layer.shadowPath = [UIBezierPath bezierPathWithRect:_slideView.bounds].CGPath;
+    if (_touchOffToClose) {
+        self.trayCloseRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hide)] autorelease];
+        [_slideView addGestureRecognizer:_trayCloseRecognizer];
+    }
     [window insertSubview:self belowSubview:_slideView];
     [UIView animateWithDuration:duration animations:^{
         CGRect frame = _slideView.frame;
@@ -221,6 +230,10 @@
 }
 
 -(void)hideWithDuration:(NSTimeInterval)duration bounce:(BOOL)bounce{
+    if (_trayCloseRecognizer) {
+        [_slideView removeGestureRecognizer:_trayCloseRecognizer];
+        self.trayCloseRecognizer = nil;
+    }
     _displayed = NO;
     void (^closeAnimation)() = ^{
         [UIView animateWithDuration:duration animations:^{
