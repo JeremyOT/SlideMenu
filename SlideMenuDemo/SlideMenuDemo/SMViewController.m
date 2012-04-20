@@ -43,7 +43,7 @@
                       [[[SlideMenuItem alloc] initWithTitle:@"Item 3" block:block] autorelease],
                       nil];
     [[SlideMenu sharedMenu] addSectionWithName:@"Header 1" items:items];
-    [[SlideMenu sharedMenuRight] addSectionWithName:@"Header Right 1" items:items];
+    [[SlideMenu sharedMenuRight] addSectionWithHeader:nil items:items];
     UIView *accView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)] autorelease];
     accView.layer.cornerRadius = 10;
     accView.backgroundColor = [UIColor whiteColor];

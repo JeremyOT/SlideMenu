@@ -109,7 +109,7 @@
 }
 
 -(void)addSectionWithHeader:(UIView *)header items:(NSArray *)items {
-    [_headers addObject:header];
+    [_headers addObject:header ? header : [NSNull null]];
     [_sections addObject:[NSMutableArray arrayWithArray:items]];
     [self.tableView reloadData];
 }
@@ -145,7 +145,11 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return [[_headers objectAtIndex:section] bounds].size.height;
+    id header = [_headers objectAtIndex:section];
+    if ([header isKindOfClass:[NSNull class]]) {
+        return 0;
+    }
+    return [header bounds].size.height;
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -153,7 +157,8 @@
 }
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    return [_headers objectAtIndex:section];
+    id header = [_headers objectAtIndex:section];
+    return [header isKindOfClass:[NSNull class]] ? nil : header;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
