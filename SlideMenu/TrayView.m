@@ -11,7 +11,7 @@
 @interface TrayView ()
 
 @property (nonatomic, assign) UIView *slideView;
-@property (nonatomic, retain) UITapGestureRecognizer *trayCloseRecognizer;
+@property (nonatomic, retain) UIView *trayCloseRecognizerView;
 
 @end
 
@@ -24,7 +24,7 @@
 @synthesize closedBlock = _closedBlock;
 @synthesize bouncedBlock = _bouncedBlock;
 @synthesize tapOffToClose = _tapOffToClose;
-@synthesize trayCloseRecognizer = _trayCloseRecognizer;
+@synthesize trayCloseRecognizerView = _trayCloseRecognizerView;
 
 #pragma mark - Lifecycle
 
@@ -57,7 +57,7 @@
     [_backgroundImageView release];
     [_closedBlock release];
     [_bouncedBlock release];
-    [_trayCloseRecognizer release];
+    [_trayCloseRecognizerView release];
     [super dealloc];
 }
 
@@ -180,8 +180,9 @@
     _slideView.layer.shadowOpacity = 0.5;
     _slideView.layer.shadowPath = [UIBezierPath bezierPathWithRect:_slideView.bounds].CGPath;
     if (_tapOffToClose) {
-        self.trayCloseRecognizer = [[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hide)] autorelease];
-        [_slideView addGestureRecognizer:_trayCloseRecognizer];
+        self.trayCloseRecognizerView = [[[UIView alloc] initWithFrame:_slideView.bounds] autorelease];
+        [self.trayCloseRecognizerView addGestureRecognizer:[[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hide)] autorelease]];
+        [_slideView addSubview:self.trayCloseRecognizerView];
     }
     [window insertSubview:self belowSubview:_slideView];
     [UIView animateWithDuration:duration animations:^{
@@ -229,10 +230,8 @@
 }
 
 -(void)hideWithDuration:(NSTimeInterval)duration bounce:(BOOL)bounce{
-    if (_trayCloseRecognizer) {
-        [_slideView removeGestureRecognizer:_trayCloseRecognizer];
-        self.trayCloseRecognizer = nil;
-    }
+    [_trayCloseRecognizerView removeFromSuperview];
+    self.trayCloseRecognizerView = nil;
     _displayed = NO;
     void (^closeAnimation)() = ^{
         [UIView animateWithDuration:duration animations:^{

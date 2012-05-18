@@ -104,6 +104,7 @@
 -(void)addSectionWithName:(NSString *)name items:(NSArray *)items {
     [self addSectionWithName:name items:items headerColor:[UIColor whiteColor]];
 }
+
 -(void)addSectionWithName:(NSString *)name items:(NSArray *)items headerColor:(UIColor *)color {
     [self addSectionWithHeader:[self defaultHeaderForSectionName:name color:color] items:items];
 }
