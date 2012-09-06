@@ -25,6 +25,7 @@
 @synthesize bouncedBlock = _bouncedBlock;
 @synthesize tapOffToClose = _tapOffToClose;
 @synthesize trayCloseRecognizerView = _trayCloseRecognizerView;
+@synthesize autoHideOnRotate=_autoHideOnRotate;
 
 #pragma mark - Lifecycle
 
@@ -46,8 +47,8 @@
         _orientation = [[UIApplication sharedApplication] statusBarOrientation];
         _defaultAnimationDuration = 0.25;
         _tapOffToClose = YES;
-        [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIDeviceOrientationDidChangeNotification object:nil];
+        _autoHideOnRotate = YES;
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationDidChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
     }
     return self;
 }
@@ -292,7 +293,7 @@
 }
 
 -(void)orientationDidChange:(NSNotification*)note {
-    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
     if (orientation == _orientation || !_supportedOrientations[orientation]) {
         return;
     }
@@ -303,6 +304,9 @@
         } completion:^(BOOL finished) {
             self.alpha = 1;
         }];
+        if(_autoHideOnRotate){
+            [self hide];
+        }
     }
     _orientation = orientation;
 }

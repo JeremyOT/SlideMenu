@@ -24,10 +24,16 @@
 -(void)addSectionWithName:(NSString*)name items:(NSArray*)items;
 -(void)addSectionWithName:(NSString*)name items:(NSArray*)items headerColor:(UIColor*)color;
 -(void)addSectionWithHeader:(UIView*)name items:(NSArray*)items;
+-(void)addSectionWithName:(NSString*)name items:(NSArray*)items atIndex:(NSInteger)index;
+-(void)addSectionWithName:(NSString*)name items:(NSArray*)items headerColor:(UIColor*)color atIndex:(NSInteger)index;
+-(void)addSectionWithHeader:(UIView*)name items:(NSArray*)items atIndex:(NSInteger)index;
 -(void)addItem:(SlideMenuItem*)item inSection:(NSInteger)section;
+
+-(void)replaceItemsInSection:(NSInteger)section withItems:(NSArray*)items;
 
 -(void)removeSection:(NSInteger)section;
 -(void)removeItemAtIndexPath:(NSIndexPath*)indexPath;
+-(void)clearItemsInSection:(NSInteger)section;
 -(void)clearItems;
 
 @end

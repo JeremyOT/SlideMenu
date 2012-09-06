@@ -102,21 +102,40 @@
 }
 
 -(void)addSectionWithName:(NSString *)name items:(NSArray *)items {
-    [self addSectionWithName:name items:items headerColor:[UIColor whiteColor]];
+    return [self addSectionWithName:name items:items headerColor:[UIColor whiteColor] atIndex:[_sections count]];
+}
+
+-(void)addSectionWithName:(NSString *)name items:(NSArray *)items atIndex:(NSInteger)index {
+    [self addSectionWithName:name items:items headerColor:[UIColor whiteColor] atIndex:index];
 }
 
 -(void)addSectionWithName:(NSString *)name items:(NSArray *)items headerColor:(UIColor *)color {
     [self addSectionWithHeader:[self defaultHeaderForSectionName:name color:color] items:items];
 }
 
+-(void)addSectionWithName:(NSString *)name items:(NSArray *)items headerColor:(UIColor *)color atIndex:(NSInteger)index{
+    [self addSectionWithHeader:[self defaultHeaderForSectionName:name color:color] items:items atIndex:index];
+}
+
 -(void)addSectionWithHeader:(UIView *)header items:(NSArray *)items {
-    [_headers addObject:header ? header : [NSNull null]];
-    [_sections addObject:[NSMutableArray arrayWithArray:items]];
+    [self addSectionWithHeader:header items:items atIndex:[_sections count]];
+}
+
+-(void)addSectionWithHeader:(UIView *)header items:(NSArray *)items atIndex:(NSInteger)index {
+    [_headers insertObject:header ? header : [NSNull null] atIndex:index];
+    [_sections insertObject:[NSMutableArray arrayWithArray:items] atIndex:index];
     [self.tableView reloadData];
 }
 
 -(void)addItem:(SlideMenuItem *)item inSection:(NSInteger)section {
     [[_sections objectAtIndex:section] addObject:item];
+    [self.tableView reloadData];
+}
+
+#pragma mark - Replacing Items
+
+-(void)replaceItemsInSection:(NSInteger)section withItems:(NSArray *)items {
+    [_sections replaceObjectAtIndex:section withObject:[NSMutableArray arrayWithArray:items]];
     [self.tableView reloadData];
 }
 
@@ -131,6 +150,11 @@
 -(void)removeItemAtIndexPath:(NSIndexPath *)indexPath {
     [[_sections objectAtIndex:indexPath.section] removeObjectAtIndex:indexPath.row];
     [self.tableView reloadData];
+}
+
+-(void)clearItemsInSection:(NSInteger)section {
+  [[_sections objectAtIndex:section] removeAllObjects];
+  [self.tableView reloadData];
 }
 
 -(void)clearItems {
