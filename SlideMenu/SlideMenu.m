@@ -173,7 +173,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [[self tableView:tableView cellForRowAtIndexPath:indexPath] bounds].size.height;
+    return [[self itemAtIndexPath:indexPath] cellHeight];
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {

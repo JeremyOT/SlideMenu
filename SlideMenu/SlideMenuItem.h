@@ -15,6 +15,7 @@
 @property (nonatomic, retain) UIView *accessoryView;
 @property (nonatomic, retain) UIColor *textColor;
 @property (nonatomic, retain) UIColor *backgroundColor;
+@property (nonatomic, assign) CGFloat cellHeight;
 // By default this is NSStringFromClass([self class]) and only needs to be overridden if a subclass
 // represents more than one type of cell.
 @property (nonatomic, readonly) NSString *cellReuseIdentifier;

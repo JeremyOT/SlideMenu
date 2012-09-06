@@ -48,6 +48,7 @@
         self.textColor = textColor ? textColor : [UIColor whiteColor];
         self.backgroundColor = backgroundColor ? backgroundColor : [UIColor clearColor];
         self.block = action;
+        _cellHeight = 44;
     }
     return self;
 }
