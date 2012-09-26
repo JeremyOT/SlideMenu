@@ -34,7 +34,7 @@
 }
 
 - (id)initWithFrame:(CGRect)frame {
-    if (([super initWithFrame:frame])) {
+    if ((self = [super initWithFrame:frame])) {
         self.backgroundColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:1];
         self.autoresizingMask = 0;
         _supportedOrientations[UIDeviceOrientationUnknown] = NO;
