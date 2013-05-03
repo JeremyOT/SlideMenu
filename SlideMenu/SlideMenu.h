@@ -20,6 +20,7 @@
 
 -(UIView*)headerForSection:(NSInteger)section;
 -(SlideMenuItem*)itemAtIndexPath:(NSIndexPath*)indexPath;
+-(NSInteger)sectionCount;
 
 -(void)addSectionWithName:(NSString*)name items:(NSArray*)items;
 -(void)addSectionWithName:(NSString*)name items:(NSArray*)items headerColor:(UIColor*)color;

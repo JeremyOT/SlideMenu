@@ -74,6 +74,10 @@
     return [[_sections objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
 }
 
+-(NSInteger)sectionCount {
+    return [_sections count];
+}
+
 #pragma mark - Adding Items
 
 -(UIView*)defaultHeaderForSectionName:(NSString*)name color:(UIColor*)color {
